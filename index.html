@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listening Cloze Test - Audio Script 02</title>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --primary-light: #e6f2ff;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            padding: 30px;
+            margin: 20px;
+            box-sizing: border-box;
+        }
+
+        /* --- Welcome Screen --- */
+        #welcome-screen {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        #welcome-screen h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        #welcome-screen p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            width: 100%;
+            max-width: 300px;
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-color);
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        .btn:hover:not(:disabled) {
+            background-color: #004494;
+        }
+
+        .btn:active:not(:disabled) {
+            transform: translateY(2px);
+        }
+
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .btn-reload {
+            background-color: var(--success-color);
+            display: none;
+            margin: 20px auto 0;
+        }
+
+        .btn-reload:hover {
+            background-color: #218838;
+        }
+
+        /* --- Test Screen --- */
+        #test-screen {
+            display: none;
+        }
+
+        .test-header {
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .test-header h2 {
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        .script-content {
+            font-size: 16px;
+            color: #444;
+        }
+
+        .script-content p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .part-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-top: 30px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 10px;
+            background-color: var(--primary-light);
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        /* --- Cloze Inputs --- */
+        .cloze-input {
+            width: 100px;
+            border: none;
+            border-bottom: 2px solid var(--primary-color);
+            background-color: var(--primary-light);
+            font-size: 16px;
+            font-family: inherit;
+            color: var(--primary-color);
+            text-align: center;
+            padding: 2px 5px;
+            margin: 0 4px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .cloze-input:focus {
+            background-color: #cce5ff;
+        }
+
+        .cloze-input:disabled {
+            background-color: transparent;
+            border-bottom: none;
+        }
+
+        /* Grading States */
+        .cloze-input.correct {
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .cloze-input.incorrect {
+            color: var(--error-color);
+            text-decoration: line-through;
+            opacity: 0.8;
+        }
+
+        .answer-label {
+            color: var(--success-color);
+            font-weight: bold;
+            margin-left: 5px;
+            font-size: 0.95em;
+            background: #e8f5e9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        /* --- Results Area --- */
+        .submit-area {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid var(--primary-light);
+        }
+
+        #result-message {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .result-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        /* Counter */
+        #progress-counter {
+            font-weight: bold;
+            color: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+            .test-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .cloze-input {
+                width: 90px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="welcome-screen">
+            <h1>Listening Test 02</h1>
+            <p>Please enter your full name to begin the test.</p>
+            <div class="input-group">
+                <input type="text" id="student-name" placeholder="Họ và tên..." autocomplete="off">
+            </div>
+            <button class="btn" id="start-btn" disabled>Bắt đầu làm bài</button>
+        </div>
+
+        <div id="test-screen">
+            <div class="test-header">
+                <div>
+                    <h2>Audio Script - Test 2</h2>
+                    <p><strong>Student:</strong> <span id="display-name"></span></p>
+                </div>
+                <div id="progress-counter">0 / 100 Điền từ</div>
+            </div>
+
+            <div class="script-content">
+                <p>You will listen to 17 short recordings. You can listen to each recording TWO TIMES ONLY. You have 40 minutes to complete the test.</p>
+
+                <div class="part-title">Part 1</div>
+                <p>You listen to a short monologue or dialogue and identify specific information such as a phone number, a time, or a place.</p>
+                <p><strong>0. F:</strong> Hello. It's mum. Please can you go to the shop on your way home and get me some <input type="text" class="cloze-input" data-answer="chocolate">? I don't like the chocolate with <input type="text" class="cloze-input" data-answer="raisins">, but I do like the one with <input type="text" class="cloze-input" data-answer="nuts">. Please make sure it's not dark or white chocolate, I can only eat <input type="text" class="cloze-input" data-answer="milk"> chocolate.</p>
+                
+                <p><strong>1. F:</strong> Are you ready for tomorrow's trip? My dad can't take me to the train <input type="text" class="cloze-input" data-answer="station"> at eight thirty, so I have to <input type="text" class="cloze-input" data-answer="catch"> the bus. <input type="text" class="cloze-input" data-answer="Instead"> of catching the 9:05 train, we will have to get the next one. So if 9.30 is too late for you, let me know. Maybe I could <input type="text" class="cloze-input" data-answer="arrange"> to take the 8.05 bus. We'll see. Talk later.</p>
+
+                <p><strong>2. M:</strong> Last week I went <input type="text" class="cloze-input" data-answer="cycling"> every day. On Wednesday I <input type="text" class="cloze-input" data-answer="managed"> to cycle the ten miles to town. On Friday I only cycled around the park, though and then it was <input type="text" class="cloze-input" data-answer="raining"> on Saturday, so I didn't go out but on Sunday I did two miles more than Wednesday. By the end of the month I hope to have reached 20 miles if I am to enter the cycling <input type="text" class="cloze-input" data-answer="marathon"> in the summer. 40 miles is a lot but I hope I will get there with proper practice.</p>
+
+                <p><strong>3. F:</strong> I hope you can help me. I have lost my son. He is about <input type="text" class="cloze-input" data-answer="thirteen"> years old but is tall for his age. He is wearing a black <input type="text" class="cloze-input" data-answer="jacket"> and white <input type="text" class="cloze-input" data-answer="trainers">. His hair is black and long. Here's a photo of him. His hair's a bit shorter than that now and he's also a bit <input type="text" class="cloze-input" data-answer="thinner">, but otherwise that's what he looks like now.</p>
+
+                <p><strong>4. M:</strong> You need to go to the end of the road and turn <input type="text" class="cloze-input" data-answer="right">. Go down that road for about half a kilometre and go over the railway <input type="text" class="cloze-input" data-answer="bridge">. Next to the train station turn left and the coffee shop is by the <input type="text" class="cloze-input" data-answer="supermarket"> on the right, <input type="text" class="cloze-input" data-answer="opposite"> the police station.</p>
+
+                <p><strong>5. F:</strong> Hello John. I expected to see you at the <input type="text" class="cloze-input" data-answer="swimming"> pool today, but you didn't come. I'm going out to watch a <input type="text" class="cloze-input" data-answer="movie"> this evening with some friends, followed by <input type="text" class="cloze-input" data-answer="dinner">. Would you like to join us? If so, we could walk there together if you are in the <input type="text" class="cloze-input" data-answer="mood">. Anyway, please give me a call. I'll be at home till 5. Bye.</p>
+
+                <p><strong>6. M:</strong> Please can I have a meat pizza with extra <input type="text" class="cloze-input" data-answer="chicken"> and <input type="text" class="cloze-input" data-answer="onions"> please? Can I also have a medium Italian special pizza with extra cheese but no <input type="text" class="cloze-input" data-answer="olives"> please? Can we also add some bacon to the first one? Thanks. Finally, can I have some <input type="text" class="cloze-input" data-answer="garlic"> bread with no tomato please? That'll be all.</p>
+
+                <p><strong>7. F:</strong> Hi. It's Stacy here. Just calling to let you know I've <input type="text" class="cloze-input" data-answer="changed"> numbers. As you know, my number used to be 07911 124365. I asked the phone company for something easy to <input type="text" class="cloze-input" data-answer="remember"> like 07911 123456, but they said that was <input type="text" class="cloze-input" data-answer="already"> taken. Anyway, my new number is 07911 126534. Oh sorry, that's Bob's number. I'm <input type="text" class="cloze-input" data-answer="hopeless">. So it's 07911 134625. Talk soon.</p>
+
+                <p><strong>8. F:</strong> Can I have your attention please? We are sorry to announce that all flights this evening will be <input type="text" class="cloze-input" data-answer="delayed">. This is because there is low <input type="text" class="cloze-input" data-answer="visibility"> at the airport due to the heavy fog after the storm. Snow is also <input type="text" class="cloze-input" data-answer="expected"> for tonight, so there are likely to be further delays for later flights, especially if there are strong <input type="text" class="cloze-input" data-answer="winds">. Please contact the airline for more information. Thank you.</p>
+
+                <p><strong>9. F:</strong> I am so excited. I am going on holiday next week. My <input type="text" class="cloze-input" data-answer="suitcase"> is nearly ready, and I have my passport and tickets. I hope the weather will be <input type="text" class="cloze-input" data-answer="terrible"> in Italy. Do you remember how terrible it was last summer in Spain? Anyway, I'm still trying to <input type="text" class="cloze-input" data-answer="convince"> Steve to stop by Greece on our way back to England but he's not made his mind up yet. I will send you a <input type="text" class="cloze-input" data-answer="postcard"> and bring back a gift for you either way.</p>
+
+                <p><strong>10. M:</strong> This month on Busy Teen Youth Centre enjoy great <input type="text" class="cloze-input" data-answer="discounts"> on a range of activities. Sign up for our <input type="text" class="cloze-input" data-answer="famous"> painting classes from Monday to Wednesday and get the first class free. From Tuesday to Thursday <input type="text" class="cloze-input" data-answer="practise"> your writing skills with discounts of 50%. Take advantage of the opportunity to learn more about poetry from the experts from Thursday to Saturday. And throughout the weekend you and your friend can become top <input type="text" class="cloze-input" data-answer="sculptors"> with rates being 30% off.</p>
+
+                <p><strong>11. M:</strong> What do you want to do tonight?<br>
+                <strong>F:</strong> I was thinking we could go to the <input type="text" class="cloze-input" data-answer="cinema">.<br>
+                <strong>M:</strong> Again? We went last night. Why don't we do something <input type="text" class="cloze-input" data-answer="different">?<br>
+                <strong>F:</strong> Ok. Let's go to that new Greek <input type="text" class="cloze-input" data-answer="restaurant"> in town.<br>
+                <strong>M:</strong> I was thinking something more active, like the sports centre.<br>
+                <strong>F:</strong> Well, I guess we could do that if that's what you really want. It's better than staying at home at least.<br>
+                <strong>M:</strong> Ok, ok, it's <input type="text" class="cloze-input" data-answer="obvious"> you aren't in the mood for that so let's stick to your plan.</p>
+
+                <p><strong>12. M:</strong> It's really hot today. Would you like to drink something?<br>
+                <strong>F:</strong> I could really do with something cold, like an ice tea.<br>
+                <strong>M:</strong> Sorry, I haven't got any. But I can make some fresh <input type="text" class="cloze-input" data-answer="lemonade"> with ice if you want.<br>
+                <strong>F:</strong> You know I'd love to have some, more than anything else. I just thought you <input type="text" class="cloze-input" data-answer="meant"> a soft drink, like a cola, or something. That's why I <input type="text" class="cloze-input" data-answer="thought"> of the ice tea at first.<br>
+                <strong>M:</strong> Ok then. I'll be back in a few <input type="text" class="cloze-input" data-answer="minutes">. I'll make some coffee for me too while I'm at it.</p>
+
+                <p><strong>13. F:</strong> The school trip <input type="text" class="cloze-input" data-answer="leaves"> on Saturday morning. Will your son be coming with us?<br>
+                <strong>M:</strong> Yes. He has always wanted to go to London. Should I pay <input type="text" class="cloze-input" data-answer="everything"> now? It's 40 <input type="text" class="cloze-input" data-answer="pounds">, isn't it?<br>
+                <strong>F:</strong> Yes, but you <input type="text" class="cloze-input" data-answer="needn't"> pay in full today. You can give half now, The rest you can pay on the day. Also, you should give Jason about 10 pounds just in case he wants to buy something from the gift shop.</p>
+
+                <div class="part-title">Part 2</div>
+                <p><strong>14. Four people are discussing their family home. Complete the sentences below.</strong></p>
+                <p><strong>Speaker A:</strong> <input type="text" class="cloze-input" data-answer="Generally"> I like living at home with my family. There are five of us. I've got a brother and a sister and we fight a lot but I love them really. My parents give us everything we need, in fact they buy us lots of things, <input type="text" class="cloze-input" data-answer="especially"> clothes. My social life suffers a bit as I have to <input type="text" class="cloze-input" data-answer="babysit"> for my little brother and sister quite often and I have many jobs to do around the house apart from my work for university. It's difficult to get any <input type="text" class="cloze-input" data-answer="spare"> time to go out and have fun.</p>
+                
+                <p><strong>Speaker B:</strong> I guess we have quite a large family for such a small house. Both mum and dad work during the day and we are all at school so it's good to have someone at home to do the cooking and keep the house in <input type="text" class="cloze-input" data-answer="order">. They are both wonderful <input type="text" class="cloze-input" data-answer="company"> anyway and sometimes when I have a problem and mum and dad aren't home or are very busy, they are there for me to talk to. I like having three <input type="text" class="cloze-input" data-answer="generations"> living under one roof. It's taught us all to be more <input type="text" class="cloze-input" data-answer="tolerant"> and not to be selfish.</p>
+
+                <p><strong>Speaker C:</strong> We do tend to get under each other's feet a lot and I wish I could have my own bedroom, but I think the <input type="text" class="cloze-input" data-answer="advantages"> outweigh the disadvantages. For a start, there's always someone to talk to and someone to help me if I have a problem. There are <input type="text" class="cloze-input" data-answer="enough"> of us to make a basketball team so we play as a family against our friends. Mum says that we have <input type="text" class="cloze-input" data-answer="exhausted"> her but really she's very <input type="text" class="cloze-input" data-answer="proud"> of us all.</p>
+
+                <p><strong>Speaker D:</strong> He takes up all of our time as there's so much that he needs; <input type="text" class="cloze-input" data-answer="feeding">, changing, bathing and sometimes just a cuddle or some attention. He really has changed our lives <input type="text" class="cloze-input" data-answer="completely">. I don't <input type="text" class="cloze-input" data-answer="resent"> losing my free time though as he's worth it. He's not very <input type="text" class="cloze-input" data-answer="entertaining"> yet as he can't do much. The house is messier than it used to be too. His things are everywhere but on the other hand we try to keep everything really clean even if it is untidy.</p>
+
+                <div class="part-title">Part 3</div>
+                <p><strong>15. Listen to a man and a woman talking and decide whose opinion matches the statements.</strong></p>
+                <p><strong>M:</strong> I was reading an <input type="text" class="cloze-input" data-answer="article"> last night that said that 85% of ten-year-olds own a mobile phone. I'm not surprised that most <input type="text" class="cloze-input" data-answer="teenagers"> have a mobile but that's a lot of young children with a mobile, isn't it?<br>
+                <strong>W:</strong> I think it's terrible. What are their parents thinking? What happened to the good old days before all this <input type="text" class="cloze-input" data-answer="technology"> when kids used to play outside together kicking a ball around. They were certainly <input type="text" class="cloze-input" data-answer="healthier"> than today's young generation.<br>
+                <strong>M:</strong> I agree with you up to a point about the playing outside thing but on the other hand you have to move with the times, don't you? And as for parents, well I feel a bit sorry for them as they are under a lot of <input type="text" class="cloze-input" data-answer="pressure"> to buy phones and computer games and all sorts of other <input type="text" class="cloze-input" data-answer="gadgets">. Basically I don't think there's any harm in younger children having a mobile as long as it doesn't have a negative effect on their schoolwork.<br>
+                <strong>W:</strong> There's no way mobiles should be allowed in schools. They just create a <input type="text" class="cloze-input" data-answer="nightmare"> for the teachers.<br>
+                <strong>M:</strong> Well yes, I agree that the temptation to start texting might be too great for lots of children and it's so important that they <input type="text" class="cloze-input" data-answer="concentrate"> in their lessons.<br>
+                <strong>W:</strong> I can see that they give young people more <input type="text" class="cloze-input" data-answer="independence">. I mean if a teenager wants to go out with their friends they can let their parents know where they are and if they have a problem the parents can get to them quickly. But that still doesn't make them appropriate for younger children in my opinion.<br>
+                <strong>M:</strong> Well we can agree to disagree on that one. Actually one thing I find worrying is the many reports of phones <input type="text" class="cloze-input" data-answer="overheating"> especially overnight when they are recharging. There have been many cases of house fires due to burning mobiles.<br>
+                <strong>W:</strong> Really? I've never heard of that happening before. I'll be more careful in future.</p>
+
+                <div class="part-title">Part 4</div>
+                <p><strong>16. Listen to someone talking about a piece of art and answer the questions below.</strong></p>
+                <p>As the erosion of our oceans' coral reef rapidly worsens, sculptor Jason Decaires Taylor is taking an <input type="text" class="cloze-input" data-answer="unconventional"> approach to replenishing the <input type="text" class="cloze-input" data-answer="ecosystem">. Taylor is installing underwater <input type="text" class="cloze-input" data-answer="sculptures"> to help encourage underwater life while also exploring the boundaries of art. Taylor has created an incredible artificial reef of statues he calls Silent Evolution. Located off the coast of Cancun, Mexico, the compelling <input type="text" class="cloze-input" data-answer="installation"> took several months to complete. Silent Evolution embodies a spirit that shifts between sadness and awe, all the while reminding us of the <input type="text" class="cloze-input" data-answer="intricate"> relationship between man and nature. His thoughtful placement in the shallow and crystal-clear waters of The National Marine Park of Cancun, Mexico, makes the piece very <input type="text" class="cloze-input" data-answer="accessible"> to divers and tourists who can watch, as, over time, the sculptures develop and become 'dressed' in coral.</p>
+                <p>I probably don't have to mention the life-threatening conditions natural reefs are under today due to human <input type="text" class="cloze-input" data-answer="behavior">. However, artificial reefs, which are quite a new phenomenon, have proved to be a very good <input type="text" class="cloze-input" data-answer="alternative"> as they are <input type="text" class="cloze-input" data-answer="durable">, environmentally friendly and offer relief to the natural ones as they can regenerate. With 400 life-size human sculptures installed 9 metres below sea level, Taylor's installment plays many roles, but it is foremost an artificial reef encouraging the growth of marine life. Taylor's sculptures are created with a pH-neutral concrete, reinforced with fiberglass, which, surprisingly, attracts marine life. Taylor also 'rescues' corals that were damaged in storms or by humans, and replants these on his sculptures. There's a strong feeling of hope in the work, even though the physical structure of the sculptures look as though the people have been tied together. Taylor's message can be read in many different ways and voices, but what he does perfectly, is to remind us of our close relationship with and not to mention <input type="text" class="cloze-input" data-answer="dependency"> on nature.</p>
+
+                <p><strong>17. Listen to a city planner talking about a new housing estate.</strong></p>
+                <p>Good afternoon everyone, well we are at an important stage in the planning of the new housing estate on the edge of the village next to the <input type="text" class="cloze-input" data-answer="recreation"> ground. First of all I want to make it clear that unfortunately we are not in a position to make a final <input type="text" class="cloze-input" data-answer="decision"> on the project. There are a number of reasons for this which I will outline as quickly and clearly as I can. Firstly I will give an <input type="text" class="cloze-input" data-answer="overview"> of the project and discuss the positive aspects of which there are many. With previous similar developments one of the main concerns was the lack of <input type="text" class="cloze-input" data-answer="affordable"> housing. We certainly need to be able to provide small homes for the youngsters who are just starting out on the property market. This came up as one of the main <input type="text" class="cloze-input" data-answer="requirements"> at the last committee meeting. I am happy to say that this project does in fact meet those requirements with 20 two-bedroom houses included in the scheme.</p>
+                <p>The public spaces around the estate look very attractive however there was the promise of a children's playground which has been <input type="text" class="cloze-input" data-answer="omitted"> from the last plans. I know this was something that many young families felt was lacking in the village and so this is a facility that needs to be back on board. Now as a council we have spent a lot of time working with the developers to make this work for everyone and we have been quite <input type="text" class="cloze-input" data-answer="flexible">. However considering that this is supposedly the final plan we must insist on some changes to cover the needs of the whole village considering we are here to represent the whole <input type="text" class="cloze-input" data-answer="community"> not just some sections of the local population. Therefore until we have the latest drawings we simply can't approve the plans. Now are there any questions at this point?</p>
+
+            </div>
+
+            <div class="submit-area">
+                <button class="btn" id="submit-btn">Kiểm tra đáp án</button>
+                <div id="result-message"></div>
+                <button class="btn btn-reload" id="reload-btn" onclick="location.reload()">Làm lại bài mới</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CẤU HÌNH GOOGLE APPS SCRIPT URL CỦA BẠN TẠI ĐÂY
+        const APPS_SCRIPT_URL = "DÁN_LINK_CỦA_BẠN_VÀO_ĐÂY";
+
+        // DOM Elements
+        const studentNameInput = document.getElementById('student-name');
+        const startBtn = document.getElementById('start-btn');
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const testScreen = document.getElementById('test-screen');
+        const displayName = document.getElementById('display-name');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultMessage = document.getElementById('result-message');
+        const reloadBtn = document.getElementById('reload-btn');
+        const inputs = document.querySelectorAll('.cloze-input');
+        const progressCounter = document.getElementById('progress-counter');
+
+        let studentName = "";
+
+        // Welcome Screen Logic
+        studentNameInput.addEventListener('input', (e) => {
+            if (e.target.value.trim().length > 0) {
+                startBtn.disabled = false;
+            } else {
+                startBtn.disabled = true;
+            }
+        });
+
+        startBtn.addEventListener('click', () => {
+            studentName = studentNameInput.value.trim();
+            displayName.textContent = studentName;
+            welcomeScreen.style.display = 'none';
+            testScreen.style.display = 'block';
+        });
+
+        // Input Progress Logic
+        inputs.forEach(input => {
+            input.addEventListener('input', updateProgress);
+        });
+
+        function updateProgress() {
+            let filled = 0;
+            inputs.forEach(input => {
+                if (input.value.trim() !== '') filled++;
+            });
+            progressCounter.textContent = `${filled} / ${inputs.length} Điền từ`;
+        }
+
+        // Submit Logic
+        submitBtn.addEventListener('click', async () => {
+            // Thay đổi trạng thái nút
+            submitBtn.textContent = "Đang nộp bài...";
+            submitBtn.disabled = true;
+
+            // Tính điểm trước để gửi đi
+            let correctCount = 0;
+            const totalCount = inputs.length;
+
+            inputs.forEach(input => {
+                const userAnswer = input.value.trim().toLowerCase();
+                const correctAnswer = input.getAttribute('data-answer').toLowerCase();
+                if (userAnswer === correctAnswer) {
+                    correctCount++;
+                }
+            });
+
+            // Gọi API lưu dữ liệu
+            try {
+                // Kiểm tra xem đã thay đổi link chưa (chỉ gửi thật nếu đã thay đổi)
+                if (APPS_SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbyUSW3enUfuaMn8qCdhoWei8CUNjFe-uQLatS8y3fCTN-9T8HlGn6s-Cy8qVtKpArI/exec") {
+                    await fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            name: studentName,
+                            correct: correctCount,
+                            total: totalCount
+                        })
+                    });
+                } else {
+                    // Cố tình delay 1 giây để mô phỏng UX nộp bài khi bạn đang test offline
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+
+                // CHỈ THỰC HIỆN CHẤM ĐIỂM SAU KHI FETCH THÀNH CÔNG
+                gradeTest(correctCount, totalCount);
+
+            } catch (error) {
+                alert("Đã xảy ra lỗi khi nộp bài. Vui lòng kiểm tra kết nối mạng và thử lại.");
+                submitBtn.textContent = "Kiểm tra đáp án";
+                submitBtn.disabled = false;
+            }
+        });
+
+        function gradeTest(correctCount, totalCount) {
+            inputs.forEach(input => {
+                const userAnswer = input.value.trim();
+                const correctAnswer = input.getAttribute('data-answer');
+
+                // Khóa ô input
+                input.disabled = true;
+
+                if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                    // Trả lời đúng
+                    input.classList.add('correct');
+                } else {
+                    // Trả lời sai hoặc bỏ trống
+                    input.classList.add('incorrect');
+                    if (userAnswer === "") {
+                        input.value = "[Trống]";
+                    }
+                    
+                    // Tạo nhãn đáp án đúng
+                    const correctLabel = document.createElement('span');
+                    correctLabel.classList.add('answer-label');
+                    correctLabel.textContent = `✓ ${correctAnswer}`;
+                    input.parentNode.insertBefore(correctLabel, input.nextSibling);
+                }
+            });
+
+            // Ẩn nút nộp bài và hiện kết quả & nút làm lại
+            submitBtn.style.display = 'none';
+            resultMessage.textContent = `Chúc mừng ${studentName}! Kết quả: ${correctCount} / ${totalCount} câu đúng.`;
+            resultMessage.style.display = 'block';
+            resultMessage.classList.add('result-success');
+            reloadBtn.style.display = 'inline-block';
+        }
+    </script>
+</body>
+</html>
